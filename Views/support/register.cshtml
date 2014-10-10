@@ -1,0 +1,82 @@
+﻿@model BuildFeed.Models.ViewModel.RegistrationUser
+
+@{
+    ViewBag.Title = "Register for an account | BuildFeed";
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<h2>Register for an account</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    if(ViewData["ErrorMessage"] != null)
+    {
+        <p class="text-danger">
+            @ViewData["ErrorMessage"]
+        </p>
+    }
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.EmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    }
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval");
+}

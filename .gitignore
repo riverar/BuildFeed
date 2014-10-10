@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+# Publish Profiles
+[Pp]roperties/[Pp]ublish[Pp]rofiles/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

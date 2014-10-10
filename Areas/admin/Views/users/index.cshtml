@@ -1,0 +1,42 @@
+﻿@model IEnumerable<System.Web.Security.MembershipUser>
+
+@{
+    ViewBag.Title = "User Administration | BuildFeed";
+}
+
+<h2>User Administration</h2>
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>
+            Username
+        </th>
+        <th>
+            Email Address
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (MembershipUser mu in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => mu.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => mu.Email)
+            </td>
+            <td class="text-right">
+                @if (mu.IsApproved)
+                {
+                    @Html.ActionLink("Unapprove", "unapprove", new { id = mu.ProviderUserKey }, new { @class = "btn btn-danger", style = "width:90px;" })
+                    }
+                else
+                {
+                    @Html.ActionLink("Approve", "approve", new { id = mu.ProviderUserKey }, new { @class = "btn btn-success", style = "width:90px;" })
+                }
+            </td>
+        </tr>
+    }
+
+</table>
