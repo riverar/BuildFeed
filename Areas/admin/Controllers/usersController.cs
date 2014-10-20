@@ -14,7 +14,7 @@ namespace BuildFeed.Areas.admin.Controllers
         // GET: admin/users
         public ActionResult Index()
         {
-            return View(Membership.GetAllUsers().Cast<MembershipUser>().OrderBy(m => m.UserName));
+            return View(Membership.GetAllUsers().Cast<MembershipUser>().OrderBy(m => m.IsApproved).ThenBy(m => m.UserName));
         }
 
         public ActionResult Approve(Guid id)

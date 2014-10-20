@@ -1,0 +1,244 @@
+﻿@model BuildFeed.Models.Build
+
+@{
+    ViewBag.Title = "Add a Build | BuildFeed";
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<h2>Add a Build</h2>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <label for="quickpaste" class="control-label col-sm-2">Quick-paste</label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-sm-6">
+                    <input id="quickpaste" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+            {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MajorVersion, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.MajorVersion, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.MajorVersion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MinorVersion, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.MinorVersion, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.MinorVersion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.Number, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Number)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Revision, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.Revision, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Revision)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lab, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.Lab, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Lab)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BuildTime, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.BuildTime, "{0:yyMMdd-HHmm}", new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.BuildTime)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SourceType, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.SourceType, "Enumeration")
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.SourceType)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SourceDetails, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(model => model.SourceDetails, new { @class = "form-control", rows = "5" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.SourceDetails)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FlightLevel, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.FlightLevel, "Enumeration")
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.FlightLevel)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaWikiUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.BetaWikiUri, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.BetaWikiUri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaWikiServerUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.BetaWikiServerUri, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.BetaWikiServerUri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WinWorldPCUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.WinWorldPCUri, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.WinWorldPCUri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaArchiveUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.BetaArchiveUri, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.BetaArchiveUri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LonghornMsUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.LonghornMsUri, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.LonghornMsUri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="Submit Build" class="btn btn-primary" />
+                <a href="/" onclick="window.history.back(); return false;" class="btn btn-default">Return to Listing</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval");
+    <script>
+        jQuery(function ($) {
+            $.validator.addMethod('date',
+            function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+
+                var ok = true;
+                try {
+                    new Date(Date.parse(value, "yyMMdd-HHmm"));
+                }
+                catch (err) {
+                    ok = false;
+                }
+                return ok;
+            });
+        });
+
+        $(function () {
+            $("#quickpaste").change(function () {
+                var regex = /(\d)\.([\d]{1,2})\.([\d]{4,5})\.([\d]{1,5})\.([a-zA-Z0-9_]+?)\.(\d\d\d\d\d\d-\d\d\d\d)/;
+                var result = regex.exec($("#quickpaste").val());
+
+                $("#MajorVersion").val(result[1]);
+                $("#MinorVersion").val(result[2]);
+                $("#Number").val(result[3]);
+                $("#Revision").val(result[4]);
+                $("#Lab").val(result[5]);
+                $("#BuildTime").val(result[6]);
+            });
+        })
+    </script>
+}

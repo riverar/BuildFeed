@@ -1,0 +1,165 @@
+﻿@model BuildFeed.Models.Build
+
+@{
+    ViewBag.Title = Model.FullBuildString + " | BuildFeed";
+}
+
+@section head
+{
+    <meta name="description" content="@Model.FullBuildString. @Model.SourceDetails" />
+    <link href="@Url.Action()" rel="canonical" />
+    <meta property="og:title" content="@Model.FullBuildString" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@Url.Action()" />
+    <meta property="og:description" content="@Model.SourceDetails, via BuildFeed." />
+    <!--<meta property="og:image" content="" />-->
+}
+
+<h2>@Model.FullBuildString</h2>
+
+
+<div class="form-horizontal form-details">
+    <div class="form-group">
+        @Html.LabelFor(model => model.MajorVersion, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.MajorVersion)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MinorVersion, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.MinorVersion)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Number, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.Number)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Revision, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.Revision)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Lab, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.Lab)</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BuildTime, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.BuildTime, "{0:yyMMdd-HHmm}")</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SourceType, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.SourceType, "Enumeration")</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SourceDetails, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <p class="form-control-static">@Html.DisplayFor(model => model.SourceDetails)</p>
+        </div>
+    </div>
+
+    @if (Model.MajorVersion == 6 && Model.MinorVersion == 4 && Model.FlightLevel != BuildFeed.Models.LevelOfFlight.None)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.FlightLevel, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">@Html.DisplayFor(model => model.FlightLevel, "Enumeration")</p>
+            </div>
+        </div>
+    }
+
+    @if (Model.BetaWikiUri != null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaWikiUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <a href="@Model.BetaWikiUri" target="_blank"><i class="fa fa-sm fa-link"></i> BetaWiki Article (Client)</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    @if (Model.BetaWikiServerUri != null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaWikiServerUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <a href="@Model.BetaWikiServerUri" target="_blank"><i class="fa fa-sm fa-link"></i> BetaWiki Article (Server)</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    @if (Model.WinWorldPCUri != null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.WinWorldPCUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <a href="@Model.WinWorldPCUri" target="_blank"><i class="fa fa-sm fa-link"></i> WinWorldPC Library</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    @if (Model.BetaArchiveUri != null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.BetaArchiveUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <a href="@Model.BetaArchiveUri" target="_blank"><i class="fa fa-sm fa-link"></i> BetaArchive Wiki</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    @if (Model.MajorVersion == 6 && Model.MinorVersion == 0 && Model.LonghornMsUri != null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.LonghornMsUri, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <a href="@Model.LonghornMsUri" target="_blank"><i class="fa fa-sm fa-link"></i> Longhorn.ms Article</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Share</label>
+        <div class="col-sm-10">
+            <div class="addthis_sharing_toolbox"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="/" class="btn btn-default">Return to Listing</a>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5431719a661cbfd0" async></script>
+}

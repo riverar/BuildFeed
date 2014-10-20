@@ -1,0 +1,240 @@
+﻿@model IEnumerable<BuildFeed.Models.Build>
+
+@{
+    ViewBag.Action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    ViewBag.Title = "BuildFeed";
+
+
+    if (ViewBag.PageNumber > 1)
+    {
+        ViewBag.Title = string.Format("Page {1} | {0}", ViewBag.Title, ViewBag.PageNumber);
+    }
+
+    switch (ViewBag.Action as string)
+    {
+        case "Version":
+            ViewBag.Title = string.Format("Windows NT {1}.{2} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("major").RawValue, ViewContext.Controller.ValueProvider.GetValue("minor").RawValue);
+            break;
+        case "Lab":
+            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("lab").RawValue);
+            break;
+        case "Year":
+            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("year").RawValue);
+            break;
+        case "Source":
+            ViewBag.Title = string.Format("{1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("source").RawValue);
+            break;
+        case "Index":
+            ViewBag.Title = "BuildFeed | The collaborative build list";
+            break;
+    }
+}
+
+<div class="row">
+    <div class="col-sm-9">
+        <ul class="list-unstyled">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <div class="build-head">
+                        @Html.ActionLink("Info", "Info", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-xs" })
+                        }
+                        @if (User.Identity.Name == "hounsell")
+                        {
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                        }
+                        <h3>@Html.DisplayFor(modelItem => item.FullBuildString)</h3>
+                    </div>
+                    <div class="build-foot">
+                        <span class="badge">@Html.DisplayFor(TypeOfSource => item.SourceType, "Enumeration")</span>
+                        @if (item.FlightLevel != BuildFeed.Models.LevelOfFlight.None)
+                        {
+                            <span class="badge">Flight Level: @Html.DisplayFor(TypeOfSource => item.FlightLevel, "Enumeration")</span>
+                        }
+                        @if (item.BetaWikiUri != null)
+                        {
+                            <a href="@item.BetaWikiServerUri" target="_blank" class="badge"><i class="fa fa-sm fa-link"></i> BetaWiki (Client)</a>
+                        }
+                        @if (item.BetaWikiServerUri != null)
+                        {
+                            <a href="@item.BetaWikiServerUri" target="_blank" class="badge"><i class="fa fa-sm fa-link"></i> BetaWiki (Server)</a>
+                        }
+                        @if (item.WinWorldPCUri != null)
+                        {
+                            <a href="@item.WinWorldPCUri" target="_blank" class="badge"><i class="fa fa-sm fa-link"></i> WinWorldPC</a>
+                        }
+                        @if (item.BetaArchiveUri != null)
+                        {
+                            <a href="@item.BetaArchiveUri" target="_blank" class="badge"><i class="fa fa-sm fa-link"></i> BetaArchive Wiki</a>
+                        }
+                        @if (item.LonghornMsUri != null)
+                        {
+                            <a href="@item.LonghornMsUri" target="_blank" class="badge"><i class="fa fa-sm fa-link"></i> Longhorn.ms</a>
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel-group" id="filter-list">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#filter-clear">
+                            Clear filters
+                        </a>
+                    </h4>
+                </div>
+                <div id="filter-clear" class="panel-collapse collapse @(ViewBag.Action == "Index" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li>@Html.ActionLink("Clear Filters", "Index", new { page = 1 })</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#filter-version">
+                            Filter by version
+                        </a>
+                    </h4>
+                </div>
+                <div id="filter-version" class="panel-collapse collapse @(ViewBag.Action == "Version" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (BuildFeed.Models.BuildVersion ver in BuildFeed.Models.Build.SelectBuildVersions())
+                            {
+                                <li><a href="@Url.Action("Version", new { minor = ver.Minor, major = ver.Major, page = 1 })">@string.Format("{0}.{1}", ver.Major, ver.Minor)</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#filter-lab">
+                            Filter by lab
+                        </a>
+                    </h4>
+                </div>
+                <div id="filter-lab" class="panel-collapse collapse @(ViewBag.Action == "Lab" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (string lab in BuildFeed.Models.Build.SelectBuildLabs())
+                            {
+                                <li>@Html.ActionLink(lab, "Lab", new { lab = lab, page = 1 })</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#filter-year">
+                            Filter by year
+                        </a>
+                    </h4>
+                </div>
+                <div id="filter-year" class="panel-collapse collapse @(ViewBag.Action == "Year" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (int year in BuildFeed.Models.Build.SelectBuildYears())
+                            {
+                                <li>@Html.ActionLink(year.ToString(), "Year", new { year = year, page = 1 })</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#filter-source">
+                            Filter by source
+                        </a>
+                    </h4>
+                </div>
+                <div id="filter-source" class="panel-collapse collapse @(ViewBag.Action == "Source" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (BuildFeed.Models.TypeOfSource s in Enum.GetValues(typeof(BuildFeed.Models.TypeOfSource)).Cast<BuildFeed.Models.TypeOfSource>().OrderBy(d => d.ToString()))
+                            {
+                                <li><a href="@Url.Action("Source", new { source = s })">@Html.DisplayFor(TypeOfSource => s, "Enumeration")</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <a data-toggle="collapse" data-parent="#filter-list" href="#admin-actions">
+                            Website Administration
+                        </a>
+                    </h4>
+                </div>
+                <div id="admin-actions" class="panel-collapse collapse @(ViewBag.Action == "Source" ? "in" : "")">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>@Html.ActionLink("Add a build", "Create", "build")</li>
+                                <li>&nbsp;</li>
+                                <li>@Html.ActionLink("Change your password", "Password", "support")</li>
+                                <li>@Html.ActionLink("Log out", "Logout", "support")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Log in", "Login", "support")</li>
+                                <li>@Html.ActionLink("Register", "Register", "support")</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.PageCount > 1)
+{
+    <ul class="pagination">
+        @if (ViewBag.PageNumber > 1)
+        {
+            <li>@Html.ActionLink(HttpUtility.HtmlDecode("&laquo;"), ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString(), new { page = ViewBag.PageNumber - 1 })</li>
+        }
+        else
+        {
+            <li class="disabled"><span>&laquo;</span></li>
+        }
+
+
+        @for (int i = 1; i <= ViewBag.PageCount; i++)
+        {
+            <li @((i == ViewBag.PageNumber) ? "class=active" : "")>@Html.ActionLink(i.ToString(), ViewBag.Action as string, new { page = i })</li>
+        }
+
+
+        @if (ViewBag.PageNumber < ViewBag.PageCount)
+        {
+            <li>@Html.ActionLink(HttpUtility.HtmlDecode("&raquo;"), ViewBag.Action as string, new { page = ViewBag.PageNumber + 1 })</li>
+        }
+        else
+        {
+            <li class="disabled"><span>&raquo;</span></li>
+        }
+    </ul>
+}

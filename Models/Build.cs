@@ -77,6 +77,10 @@ namespace BuildFeed.Models
         [DisplayName("WinWorldPC Library")]
         public Uri WinWorldPCUri { get; set; }
 
+        [DisplayName("Flight Level")]
+        [EnumDataType(typeof(LevelOfFlight))]
+        public LevelOfFlight FlightLevel { get; set; }
+
         public string FullBuildString
         {
             get
@@ -255,6 +259,14 @@ namespace BuildFeed.Models
 
         [Display(Name = "Private Leak")]
         PrivateLeak
+    }
+
+    public enum LevelOfFlight
+    {
+        None = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3
     }
 
     public struct BuildVersion
