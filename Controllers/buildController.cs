@@ -75,6 +75,12 @@ namespace BuildFeed.Controllers
         public ActionResult Info(int id)
         {
             Build b = Build.SelectById(id);
+
+            if(b == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View(b);
         }
 

@@ -265,7 +265,7 @@ namespace BuildFeed.Models
     {
         None = 0,
         Low = 1,
-        Medium = 2,
+        //Medium = 2, - medium only ever appears to return the same as high atm, may change in future.
         High = 3
     }
 

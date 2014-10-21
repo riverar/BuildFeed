@@ -111,5 +111,10 @@ namespace BuildFeed.Controllers
         {
             return View();
         }
+
+        public ActionResult rss()
+        {
+            return View();
+        }
     }
 }

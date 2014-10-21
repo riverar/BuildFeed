@@ -77,9 +77,15 @@ namespace BuildFeed
             );
 
             routes.MapRoute(
+                name: "RSS (with ID)",
+                url: "rss/{action}/{id}/",
+                defaults: new { controller = "rss", action = "index" }
+            );
+
+            routes.MapRoute(
                 name: "RSS",
                 url: "rss/{action}",
-                defaults: new { controller = "rss", action = "Index" }
+                defaults: new { controller = "rss", action = "index" }
             );
 
             routes.MapRoute(

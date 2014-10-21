@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "RSS Feeds";
+}
+
+<h2>RSS Feeds</h2>
+
+<ul>
+    <li><a href="@Url.Action("index", new { controller = "rss" })" title="Recently compiled"><i class="fa fa-sm fa-rss"></i> Recently compiled</a></li>
+    <li><a href="@Url.Action("added", new { controller = "rss" })" title="Recently added to BuildFeed"><i class="fa fa-sm fa-rss"></i> Recently added to BuildFeed</a></li>
+    <li><a href="@Url.Action("version", new { controller = "rss" })" title="Highest version"><i class="fa fa-sm fa-rss"></i> Highest version</a></li>
+    <li>
+        Flight levels
+        <ul>
+            <li><a href="@Url.Action("flight", new { controller = "rss", id = "low" })" title="Low flight level"><i class="fa fa-sm fa-rss"></i> Low flight level</a></li>
+            <li><a href="@Url.Action("flight", new { controller = "rss", id = "high" })" title="High flight level"><i class="fa fa-sm fa-rss"></i> High flight level</a></li>
+        </ul>
+    </li>
+</ul>

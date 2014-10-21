@@ -44,8 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah">
-      <HintPath>..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="Elmah.Mvc">
       <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
@@ -55,11 +56,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceKit.Common">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Common.dll</HintPath>
+    <Reference Include="NServiceKit.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceKit.Interfaces">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Interfaces.dll</HintPath>
+    <Reference Include="NServiceKit.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Redis">
       <HintPath>..\packages\NServiceKit.Redis.1.0.7\lib\net35\NServiceKit.Redis.dll</HintPath>
@@ -152,7 +155,6 @@
     <Compile Include="Auth\RedisMembershipProvider.cs" />
     <Compile Include="Controllers\apiController.cs" />
     <Compile Include="Controllers\buildController.cs" />
-    <Compile Include="Controllers\pageController.cs" />
     <Compile Include="Controllers\rssController.cs" />
     <Compile Include="Controllers\supportController.cs" />
     <Compile Include="Global.asax.cs">
@@ -211,6 +213,7 @@
     <Content Include="Views\build\info.cshtml" />
     <Content Include="Views\support\password.cshtml" />
     <Content Include="Views\support\thanks_register.cshtml" />
+    <Content Include="Views\support\rss.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

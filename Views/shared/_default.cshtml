@@ -37,10 +37,8 @@
                 <div class="col-sm-3 text-right">
                     <p class="social-links">
                         <a href="https://twitter.com/buildfeed" title="Twitter" target="_blank"><i class="fa fa-2x fa-twitter"></i></a>
-                        <a href="@Url.Action("Index", new { controller = "rss", area = "" })" title="Recently compiled"><i class="fa fa-2x fa-rss"></i></a>
-                        <a href="@Url.Action("Added", new { controller = "rss", area = "" })" title="Recently added to BuildFeed"><i class="fa fa-2x fa-rss"></i></a>
-                        <a href="@Url.Action("Version", new { controller = "rss", area = "" })" title="Highest version"><i class="fa fa-2x fa-rss"></i></a>
-                    </p>
+                        <a href="@Url.Action("rss", new { controller = "support", area = "" })" title="RSS Feeds"><i class="fa fa-2x fa-rss"></i></a>
+                   </p>
                 </div>
             </div>
         </header>
