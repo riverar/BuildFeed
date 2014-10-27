@@ -1,6 +1,22 @@
 ﻿@model IEnumerable<BuildFeed.Models.Build>
 
 @{
+    Func<object, string> GetDisplayName = o =>
+    {
+        var result = null as string;
+        var display = o.GetType()
+                       .GetMember(o.ToString()).First()
+                       .GetCustomAttributes(false)
+                       .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
+                       .LastOrDefault();
+        if (display != null)
+        {
+            result = display.GetName();
+        }
+
+        return result ?? o.ToString();
+    };
+
     ViewBag.Action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     ViewBag.Title = "BuildFeed";
 
@@ -12,20 +28,43 @@
 
     switch (ViewBag.Action as string)
     {
-        case "Version":
-            ViewBag.Title = string.Format("Windows NT {1}.{2} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("major").RawValue, ViewContext.Controller.ValueProvider.GetValue("minor").RawValue);
-            break;
-        case "Lab":
-            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("lab").RawValue);
-            break;
-        case "Year":
-            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("year").RawValue);
-            break;
-        case "Source":
-            ViewBag.Title = string.Format("{1} | {0}", ViewBag.Title, ViewContext.Controller.ValueProvider.GetValue("source").RawValue);
-            break;
         case "Index":
             ViewBag.Title = "BuildFeed | The collaborative build list";
+            break;
+        case "Lab":
+            ViewBag.ItemId = ViewContext.Controller.ValueProvider.GetValue("lab").RawValue;
+            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewBag.ItemId);
+            break;
+        case "Year":
+            ViewBag.ItemId = ViewContext.Controller.ValueProvider.GetValue("year").RawValue;
+            ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewBag.ItemId);
+            break;
+        case "Version":
+            ViewBag.ItemId = string.Format("{0}.{1}", ViewContext.Controller.ValueProvider.GetValue("major").RawValue, ViewContext.Controller.ValueProvider.GetValue("minor").RawValue);
+            ViewBag.Title = string.Format("Windows NT {1} | {0}", ViewBag.Title, ViewBag.ItemId);
+            break;
+        case "Source":
+            ViewBag.ItemId = GetDisplayName(Enum.Parse(typeof(BuildFeed.Models.TypeOfSource), ViewContext.Controller.ValueProvider.GetValue("source").RawValue.ToString()));
+            ViewBag.Title = string.Format("{1} | {0}", ViewBag.Title, ViewBag.ItemId);
+            break;
+    }
+}
+
+@section head
+{
+    @switch (ViewBag.Action as string)
+    {
+        case "Index":
+            <meta name="description" content="BuildFeed is a collaborative build list for Microsoft Windows. Keep up to date with the latest Windows 10 builds or take a peek at the list back to 2000" />
+            <meta property="og:description" content="BuildFeed is a collaborative build list for Microsoft Windows. Keep up to date with the latest Windows 10 builds or take a peek at the list back to 2000" />
+            break;
+        case "Lab":
+            <meta name="description" content="Check out all the known builds to come out of the Windows development lab @ViewBag.ItemId through BuildFeed, a collaborative Windows build list" />
+            <meta property="og:description" content="Check out all the known builds to come out of the Windows development lab @ViewBag.ItemId through BuildFeed, a collaborative Windows build list" />
+            break;
+        case "Year":
+            <meta name="description" content="View a list of all Windows builds compiled in @ViewBag.ViewId, and watch how Windows developed steadily over time, through the collaborative build list, BuildFeed" />
+            <meta property="og:description" content="View a list of all Windows builds compiled in @ViewBag.ViewId, and watch how Windows developed steadily over time, through the collaborative build list, BuildFeed" />
             break;
     }
 }
