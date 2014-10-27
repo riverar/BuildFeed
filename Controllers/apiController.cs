@@ -14,5 +14,10 @@ namespace BuildFeed.Controllers
         {
             return Build.SelectInBuildOrder();
         }
+
+        public IEnumerable<string> GetWin10Labs()
+        {
+            return Build.SelectBuildLabs(6, 4);
+        }
     }
 }

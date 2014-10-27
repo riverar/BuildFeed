@@ -219,6 +219,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\admin\Models\" />
     <Folder Include="Areas\admin\Views\Shared\" />
+    <Folder Include="Models\ApiModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

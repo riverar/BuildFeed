@@ -81,6 +81,22 @@ namespace BuildFeed.Models
         [EnumDataType(typeof(LevelOfFlight))]
         public LevelOfFlight FlightLevel { get; set; }
 
+        public bool IsLeaked
+        {
+            get
+            {
+                switch(SourceType)
+                {
+                    case TypeOfSource.PublicRelease:
+                    case TypeOfSource.InternalLeak:
+                    case TypeOfSource.UpdateGDR:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
         public string FullBuildString
         {
             get
@@ -179,6 +195,23 @@ namespace BuildFeed.Models
                 var client = rClient.As<Build>();
                 var results = client.GetAll()
                     .Where(b => !string.IsNullOrWhiteSpace(b.Lab))
+                    .GroupBy(b => b.Lab.ToLower())
+                    .Select(b => b.First().Lab.ToLower())
+                    .OrderBy(s => s);
+                return results;
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public static IEnumerable<string> SelectBuildLabs(byte major, byte minor)
+        {
+            using (RedisClient rClient = new RedisClient(DatabaseConfig.Host, DatabaseConfig.Port, db: DatabaseConfig.Database))
+            {
+                var client = rClient.As<Build>();
+                var results = client.GetAll()
+                    .Where(b => !string.IsNullOrWhiteSpace(b.Lab))
+                    .Where(b => b.MajorVersion == major)
+                    .Where(b => b.MinorVersion == minor)
                     .GroupBy(b => b.Lab.ToLower())
                     .Select(b => b.First().Lab.ToLower())
                     .OrderBy(s => s);
