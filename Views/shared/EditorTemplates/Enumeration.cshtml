@@ -3,27 +3,11 @@
 @model Enum
 
 @{
-    Func<object, string> GetDisplayName = o =>
-    {
-        var result = null as string;
-        var display = o.GetType()
-                       .GetMember(o.ToString()).First()
-                       .GetCustomAttributes(false)
-                       .OfType<DisplayAttribute>()
-                       .LastOrDefault();
-        if (display != null)
-        {
-            result = display.GetName();
-        }
-
-        return result ?? o.ToString();
-    };
-
     var values = Enum.GetValues(ViewData.ModelMetadata.ModelType).Cast<object>()
                      .Select(v => new SelectListItem
                      {
                          Selected = v.Equals(Model),
-                         Text = GetDisplayName(v),
+                         Text = DisplayHelpers.GetDisplayTextForEnum(v),
                          Value = v.ToString()
                      });
 }

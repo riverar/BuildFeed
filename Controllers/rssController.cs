@@ -36,8 +36,8 @@ namespace BuildFeed.Controllers
                              select new RssItem()
                              {
                                  Title = build.FullBuildString,
-                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id }))),
-                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id })) },
+                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id }))),
+                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id })) },
                              }).ToList()
                 }
             };
@@ -68,8 +68,8 @@ namespace BuildFeed.Controllers
                              select new RssItem()
                              {
                                  Title = build.FullBuildString,
-                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id }))),
-                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id })) },
+                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id }))),
+                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id })) },
                                  PubDate = build.Added
                              }).ToList()
                 }
@@ -109,8 +109,8 @@ namespace BuildFeed.Controllers
                              select new RssItem()
                              {
                                  Title = build.FullBuildString,
-                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id }))),
-                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id })) },
+                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id }))),
+                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id })) },
                              }).ToList()
                 }
             };
@@ -145,8 +145,8 @@ namespace BuildFeed.Controllers
                              select new RssItem()
                              {
                                  Title = build.FullBuildString,
-                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id }))),
-                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("Info", new { controller = "Build", id = build.Id })) },
+                                 Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id }))),
+                                 Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id })) },
                              }).ToList()
                 }
             };

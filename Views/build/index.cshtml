@@ -1,23 +1,7 @@
 ﻿@model IEnumerable<BuildFeed.Models.Build>
 
 @{
-    Func<object, string> GetDisplayName = o =>
-    {
-        var result = null as string;
-        var display = o.GetType()
-                       .GetMember(o.ToString()).First()
-                       .GetCustomAttributes(false)
-                       .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
-                       .LastOrDefault();
-        if (display != null)
-        {
-            result = display.GetName();
-        }
-
-        return result ?? o.ToString();
-    };
-
-    ViewBag.Action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    ViewBag.Action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
     ViewBag.Title = "BuildFeed";
 
 
@@ -28,23 +12,23 @@
 
     switch (ViewBag.Action as string)
     {
-        case "Index":
+        case "index":
             ViewBag.Title = "BuildFeed | The collaborative build list";
             break;
-        case "Lab":
+        case "lab":
             ViewBag.ItemId = ViewContext.Controller.ValueProvider.GetValue("lab").RawValue;
             ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewBag.ItemId);
             break;
-        case "Year":
+        case "year":
             ViewBag.ItemId = ViewContext.Controller.ValueProvider.GetValue("year").RawValue;
             ViewBag.Title = string.Format("Builds from {1} | {0}", ViewBag.Title, ViewBag.ItemId);
             break;
-        case "Version":
+        case "version":
             ViewBag.ItemId = string.Format("{0}.{1}", ViewContext.Controller.ValueProvider.GetValue("major").RawValue, ViewContext.Controller.ValueProvider.GetValue("minor").RawValue);
             ViewBag.Title = string.Format("Windows NT {1} | {0}", ViewBag.Title, ViewBag.ItemId);
             break;
-        case "Source":
-            ViewBag.ItemId = GetDisplayName(Enum.Parse(typeof(BuildFeed.Models.TypeOfSource), ViewContext.Controller.ValueProvider.GetValue("source").RawValue.ToString()));
+        case "source":
+            ViewBag.ItemId = DisplayHelpers.GetDisplayTextForEnum(Enum.Parse(typeof(BuildFeed.Models.TypeOfSource), ViewContext.Controller.ValueProvider.GetValue("source").RawValue.ToString()));
             ViewBag.Title = string.Format("{1} | {0}", ViewBag.Title, ViewBag.ItemId);
             break;
     }
@@ -54,15 +38,15 @@
 {
     @switch (ViewBag.Action as string)
     {
-        case "Index":
+        case "index":
             <meta name="description" content="BuildFeed is a collaborative build list for Microsoft Windows. Keep up to date with the latest Windows 10 builds or take a peek at the list back to 2000" />
             <meta property="og:description" content="BuildFeed is a collaborative build list for Microsoft Windows. Keep up to date with the latest Windows 10 builds or take a peek at the list back to 2000" />
             break;
-        case "Lab":
+        case "lab":
             <meta name="description" content="Check out all the known builds to come out of the Windows development lab @ViewBag.ItemId through BuildFeed, a collaborative Windows build list" />
             <meta property="og:description" content="Check out all the known builds to come out of the Windows development lab @ViewBag.ItemId through BuildFeed, a collaborative Windows build list" />
             break;
-        case "Year":
+        case "year":
             <meta name="description" content="View a list of all Windows builds compiled in @ViewBag.ViewId, and watch how Windows developed steadily over time, through the collaborative build list, BuildFeed" />
             <meta property="og:description" content="View a list of all Windows builds compiled in @ViewBag.ViewId, and watch how Windows developed steadily over time, through the collaborative build list, BuildFeed" />
             break;
@@ -76,14 +60,14 @@
             {
                 <li>
                     <div class="build-head">
-                        @Html.ActionLink("Info", "Info", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
+                        @Html.ActionLink("Info", "info", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
                         @if (User.Identity.IsAuthenticated)
                         {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-xs" })
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = "btn btn-default btn-xs" })
                         }
                         @if (User.Identity.Name == "hounsell")
                         {
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
                         }
                         <h3>@Html.DisplayFor(modelItem => item.FullBuildString)</h3>
                     </div>
@@ -131,7 +115,7 @@
                 <div id="filter-clear" class="panel-collapse collapse @(ViewBag.Action == "Index" ? "in" : "")">
                     <div class="panel-body">
                         <ul class="nav nav-pills nav-stacked">
-                            <li>@Html.ActionLink("Clear Filters", "Index", new { page = 1 })</li>
+                            <li>@Html.ActionLink("Clear Filters", "index", new { page = 1 })</li>
                         </ul>
                     </div>
                 </div>
@@ -150,7 +134,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             @foreach (BuildFeed.Models.BuildVersion ver in BuildFeed.Models.Build.SelectBuildVersions())
                             {
-                                <li><a href="@Url.Action("Version", new { minor = ver.Minor, major = ver.Major, page = 1 })">@string.Format("{0}.{1}", ver.Major, ver.Minor)</a></li>
+                                <li><a href="@Url.Action("version", new { minor = ver.Minor, major = ver.Major, page = 1 })">@string.Format("{0}.{1}", ver.Major, ver.Minor)</a></li>
                             }
                         </ul>
                     </div>
@@ -170,7 +154,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             @foreach (string lab in BuildFeed.Models.Build.SelectBuildLabs())
                             {
-                                <li>@Html.ActionLink(lab, "Lab", new { lab = lab, page = 1 })</li>
+                                <li>@Html.ActionLink(lab, "lab", new { lab = lab, page = 1 })</li>
                             }
                         </ul>
                     </div>
@@ -190,7 +174,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             @foreach (int year in BuildFeed.Models.Build.SelectBuildYears())
                             {
-                                <li>@Html.ActionLink(year.ToString(), "Year", new { year = year, page = 1 })</li>
+                                <li>@Html.ActionLink(year.ToString(), "year", new { year = year, page = 1 })</li>
                             }
                         </ul>
                     </div>
@@ -210,7 +194,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             @foreach (BuildFeed.Models.TypeOfSource s in Enum.GetValues(typeof(BuildFeed.Models.TypeOfSource)).Cast<BuildFeed.Models.TypeOfSource>().OrderBy(d => d.ToString()))
                             {
-                                <li><a href="@Url.Action("Source", new { source = s })">@Html.DisplayFor(TypeOfSource => s, "Enumeration")</a></li>
+                                <li><a href="@Url.Action("source", new { source = s })">@Html.DisplayFor(TypeOfSource => s, "Enumeration")</a></li>
                             }
                         </ul>
                     </div>
@@ -230,15 +214,15 @@
                         <ul class="nav nav-pills nav-stacked">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li>@Html.ActionLink("Add a build", "Create", "build")</li>
+                                <li>@Html.ActionLink("Add a build", "create", "build")</li>
                                 <li>&nbsp;</li>
-                                <li>@Html.ActionLink("Change your password", "Password", "support")</li>
-                                <li>@Html.ActionLink("Log out", "Logout", "support")</li>
+                                <li>@Html.ActionLink("Change your password", "password", "support")</li>
+                                <li>@Html.ActionLink("Log out", "logout", "support")</li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink("Log in", "Login", "support")</li>
-                                <li>@Html.ActionLink("Register", "Register", "support")</li>
+                                <li>@Html.ActionLink("Log in", "login", "support")</li>
+                                <li>@Html.ActionLink("Register", "register", "support")</li>
                             }
                         </ul>
                     </div>

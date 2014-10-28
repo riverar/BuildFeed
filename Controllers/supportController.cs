@@ -11,18 +11,18 @@ namespace BuildFeed.Controllers
     public class supportController : Controller
     {
         // GET: support
-        public ActionResult Index()
+        public ActionResult index()
         {
             return View();
         }
 
-        public ActionResult Login()
+        public ActionResult login()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(LoginUser ru)
+        public ActionResult login(LoginUser ru)
         {
             if (ModelState.IsValid)
             {
@@ -43,13 +43,13 @@ namespace BuildFeed.Controllers
         }
 
         [Authorize]
-        public ActionResult Password()
+        public ActionResult password()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Password(ChangePassword cp)
+        public ActionResult password(ChangePassword cp)
         {
             if (ModelState.IsValid)
             {
@@ -66,19 +66,19 @@ namespace BuildFeed.Controllers
             return View(cp);
         }
 
-        public ActionResult Logout()
+        public ActionResult logout()
         {
             FormsAuthentication.SignOut();
             return Redirect("/");
         }
 
-        public ActionResult Register()
+        public ActionResult register()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Register(RegistrationUser ru)
+        public ActionResult register(RegistrationUser ru)
         {
             if (ModelState.IsValid)
             {

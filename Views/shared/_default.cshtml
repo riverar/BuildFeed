@@ -8,6 +8,7 @@
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="~/favicon.ico" />
     <link rel="icon" href="~/favicon.ico" />
+    <link rel="canonical" href="@Url.Action()" />
     <meta name="application-name" content="BuildFeed" />
 
     @Styles.Render("~/content/css")
@@ -32,7 +33,7 @@
         <header id="page-header">
             <div class="row">
                 <div class="col-sm-9">
-                    <h1>@Html.ActionLink("BuildFeed", "Index", new { controller = "build", area = "", page = 1 })</h1>
+                    <h1>@Html.ActionLink("BuildFeed", "index", new { controller = "build", area = "", page = 1 })</h1>
                 </div>
                 <div class="col-sm-3 text-right">
                     <p class="social-links">

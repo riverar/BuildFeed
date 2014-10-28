@@ -10,11 +10,11 @@ namespace BuildFeed.Controllers
 {
     public class buildController : Controller
     {
-        public int pageSize { get { return 12; } }
+        public int pageSize { get { return 15; } }
         //
         // GET: /build/
 
-        public ActionResult Index(int page = 1)
+        public ActionResult index(int page = 1)
         {
             var builds = Build.SelectInBuildOrder();
             var pageBuilds = builds.Skip((page - 1) * pageSize).Take(pageSize);
@@ -25,7 +25,7 @@ namespace BuildFeed.Controllers
             return View(pageBuilds);
         }
 
-        public ActionResult Year(int year, int page = 1)
+        public ActionResult year(int year, int page = 1)
         {
             var builds = Build.SelectInBuildOrder().Where(b => b.BuildTime.HasValue && b.BuildTime.Value.Year == year);
             var pageBuilds = builds.Skip((page - 1) * pageSize).Take(pageSize);
@@ -33,10 +33,10 @@ namespace BuildFeed.Controllers
             ViewBag.PageNumber = page;
             ViewBag.PageCount = Math.Ceiling(Convert.ToDouble(builds.Count()) / Convert.ToDouble(pageSize));
 
-            return View("Index", pageBuilds);
+            return View("index", pageBuilds);
         }
 
-        public ActionResult Lab(string lab, int page = 1)
+        public ActionResult lab(string lab, int page = 1)
         {
             var builds = Build.SelectInBuildOrder().Where(b => b.Lab != null && (b.Lab.ToLower() == lab.ToLower()));
             var pageBuilds = builds.Skip((page - 1) * pageSize).Take(pageSize);
@@ -44,10 +44,10 @@ namespace BuildFeed.Controllers
             ViewBag.PageNumber = page;
             ViewBag.PageCount = Math.Ceiling(Convert.ToDouble(builds.Count()) / Convert.ToDouble(pageSize));
 
-            return View("Index", pageBuilds);
+            return View("index", pageBuilds);
         }
 
-        public ActionResult Version(int major, int minor, int page = 1)
+        public ActionResult version(int major, int minor, int page = 1)
         {
             var builds = Build.SelectInBuildOrder().Where(b => b.MajorVersion == major && b.MinorVersion == minor);
             var pageBuilds = builds.Skip((page - 1) * pageSize).Take(pageSize);
@@ -55,10 +55,10 @@ namespace BuildFeed.Controllers
             ViewBag.PageNumber = page;
             ViewBag.PageCount = Math.Ceiling(Convert.ToDouble(builds.Count()) / Convert.ToDouble(pageSize));
 
-            return View("Index", pageBuilds);
+            return View("index", pageBuilds);
         }
 
-        public ActionResult Source(TypeOfSource source, int page = 1)
+        public ActionResult source(TypeOfSource source, int page = 1)
         {
             var builds = Build.SelectInBuildOrder().Where(b => b.SourceType == source);
             var pageBuilds = builds.Skip((page - 1) * pageSize).Take(pageSize);
@@ -66,13 +66,13 @@ namespace BuildFeed.Controllers
             ViewBag.PageNumber = page;
             ViewBag.PageCount = Math.Ceiling(Convert.ToDouble(builds.Count()) / Convert.ToDouble(pageSize));
 
-            return View("Index", pageBuilds);
+            return View("index", pageBuilds);
         }
 
         //
         // GET: /build/Info/5
 
-        public ActionResult Info(int id)
+        public ActionResult info(int id)
         {
             Build b = Build.SelectById(id);
 
@@ -87,7 +87,7 @@ namespace BuildFeed.Controllers
         //
         // GET: /build/Create
         [Authorize]
-        public ActionResult Create()
+        public ActionResult create()
         {
             return View();
         }
@@ -96,7 +96,7 @@ namespace BuildFeed.Controllers
         // POST: /build/Create
         [Authorize]
         [HttpPost]
-        public ActionResult Create(Build build)
+        public ActionResult create(Build build)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace BuildFeed.Controllers
                 {
                     return View(build);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("index");
             }
             else
             {
@@ -120,17 +120,17 @@ namespace BuildFeed.Controllers
         //
         // GET: /build/Edit/5
         [Authorize]
-        public ActionResult Edit(long id)
+        public ActionResult edit(long id)
         {
             Build b = Build.SelectById(id);
-            return View("Create", b);
+            return View("create", b);
         }
 
         //
         // POST: /build/Edit/5
         [Authorize]
         [HttpPost]
-        public ActionResult Edit(long id, Build build)
+        public ActionResult edit(long id, Build build)
         {
             if (ModelState.IsValid)
             {
@@ -143,16 +143,16 @@ namespace BuildFeed.Controllers
                     return View();
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("index");
             }
             else
             {
-                return View("Create", build);
+                return View("create", build);
             }
         }
 
         [Authorize(Users = "hounsell")]
-        public ActionResult Delete(long id)
+        public ActionResult delete(long id)
         {
             Build.DeleteById(id);
             return Redirect("/");
