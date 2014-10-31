@@ -85,12 +85,7 @@ namespace BuildFeed.Controllers
 
         public async Task<ActionResult> version()
         {
-            var builds = Build.Select()
-                .OrderByDescending(b => b.MajorVersion)
-                .ThenByDescending(b => b.MinorVersion)
-                .ThenByDescending(b => b.Number)
-                .ThenByDescending(b => b.Revision)
-                .ThenByDescending(b => b.BuildTime)
+            var builds = Build.SelectInVersionOrder()
                 .Take(20);
 
 

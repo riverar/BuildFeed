@@ -10,7 +10,7 @@ namespace BuildFeed.Controllers
 {
     public class buildController : Controller
     {
-        public int pageSize { get { return 15; } }
+        public static int pageSize { get { return 15; } }
         //
         // GET: /build/
 
@@ -103,6 +103,7 @@ namespace BuildFeed.Controllers
                 try
                 {
                     build.Added = DateTime.Now;
+                    build.Modified = DateTime.Now;
                     Build.Insert(build);
                 }
                 catch

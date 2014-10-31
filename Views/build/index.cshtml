@@ -214,6 +214,11 @@
                         <ul class="nav nav-pills nav-stacked">
                             @if (User.Identity.IsAuthenticated)
                             {
+                                if (User.Identity.Name == "hounsell")
+                                {
+                                    <li>@Html.ActionLink("Administration", "index", new { controller = "base", area = "admin" })</li>
+                                    <li>&nbsp;</li>
+                                }
                                 <li>@Html.ActionLink("Add a build", "create", "build")</li>
                                 <li>&nbsp;</li>
                                 <li>@Html.ActionLink("Change your password", "password", "support")</li>

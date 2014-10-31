@@ -355,6 +355,12 @@ namespace BuildFeed.Auth
                     isFail |= (hash[i] != rm.PassHash[i]);
                 }
 
+                if(!isFail)
+                {
+                    rm.LastLoginDate = DateTime.Now;
+                    client.Store(rm);
+                }
+
                 return !isFail;
             }
         }

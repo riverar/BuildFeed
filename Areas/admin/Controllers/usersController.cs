@@ -12,19 +12,19 @@ namespace BuildFeed.Areas.admin.Controllers
     public class usersController : Controller
     {
         // GET: admin/users
-        public ActionResult Index()
+        public ActionResult index()
         {
-            return View(Membership.GetAllUsers().Cast<MembershipUser>().OrderBy(m => m.IsApproved).ThenBy(m => m.UserName));
+            return View(Membership.GetAllUsers().Cast<MembershipUser>().OrderByDescending(m => m.IsApproved).ThenBy(m => m.UserName));
         }
 
-        public ActionResult Approve(Guid id)
+        public ActionResult approve(Guid id)
         {
             var provider = (Membership.Provider as RedisMembershipProvider);
             provider.ChangeApproval(id, true);
             return RedirectToAction("Index");
         }
 
-        public ActionResult Unapprove(Guid id)
+        public ActionResult unapprove(Guid id)
         {
             var provider = (Membership.Provider as RedisMembershipProvider);
             provider.ChangeApproval(id, false);

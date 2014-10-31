@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
+using BuildFeed.Models;
 using BuildFeed.Models.ViewModel;
 
 namespace BuildFeed.Controllers
@@ -115,6 +117,104 @@ namespace BuildFeed.Controllers
         public ActionResult rss()
         {
             return View();
+        }
+
+        public ActionResult sitemap()
+        {
+            IEnumerable<Build> builds = Build.SelectInVersionOrder();
+            Dictionary<string, SitemapPagedAction[]> actions = new Dictionary<string, SitemapPagedAction[]>();
+
+            actions.Add("Pages", new SitemapPagedAction[] { new SitemapPagedAction()
+            {
+                UrlParams = new RouteValueDictionary(new {
+                    controller = "build",
+                    action = "index",
+                    page = 1
+                }),
+                Pages = (builds.Count() + (buildController.pageSize - 1)) / buildController.pageSize
+            } });
+
+            actions.Add("Versions", (from b in builds
+                                     group b by new BuildVersion() { Major = b.MajorVersion, Minor = b.MinorVersion } into bv
+                                     orderby bv.Key.Major descending,
+                                             bv.Key.Minor descending
+                                     select new SitemapPagedAction()
+                                     {
+                                         Name = string.Format("Windows NT {0}.{1}", bv.Key.Major, bv.Key.Minor),
+                                         UrlParams = new RouteValueDictionary(new
+                                         {
+                                             controller = "build",
+                                             action = "version",
+                                             major = bv.Key.Major,
+                                             minor = bv.Key.Minor,
+                                             page = 1
+                                         }),
+                                         Pages = (bv.Count() + (buildController.pageSize - 1)) / buildController.pageSize
+                                     }).ToArray());
+
+            actions.Add("Labs", (from b in builds
+                                 where !string.IsNullOrEmpty(b.Lab)
+                                 group b by b.Lab into bv
+                                 orderby bv.Key
+                                 select new SitemapPagedAction()
+                                 {
+                                     Name = bv.Key,
+                                     UrlParams = new RouteValueDictionary(new
+                                     {
+                                         controller = "build",
+                                         action = "version",
+                                         lab = bv.Key,
+                                         page = 1
+                                     }),
+                                     Pages = (bv.Count() + (buildController.pageSize - 1)) / buildController.pageSize
+                                 }).ToArray());
+
+            actions.Add("Years", (from b in builds
+                                 where b.BuildTime.HasValue
+                                 group b by b.BuildTime.Value.Year into bv
+                                 orderby bv.Key
+                                 select new SitemapPagedAction()
+                                 {
+                                     Name = bv.Key.ToString(),
+                                     UrlParams = new RouteValueDictionary(new
+                                     {
+                                         controller = "build",
+                                         action = "year",
+                                         year = bv.Key,
+                                         page = 1
+                                     }),
+                                     Pages = (bv.Count() + (buildController.pageSize - 1)) / buildController.pageSize
+                                 }).ToArray());
+
+            actions.Add("Sources", (from b in builds
+                                 group b by b.SourceType into bv
+                                 orderby bv.Key
+                                 select new SitemapPagedAction()
+                                 {
+                                     Name = DisplayHelpers.GetDisplayTextForEnum(bv.Key),
+                                     UrlParams = new RouteValueDictionary(new
+                                     {
+                                         controller = "build",
+                                         action = "version",
+                                         source = bv.Key,
+                                         page = 1
+                                     }),
+                                     Pages = (bv.Count() + (buildController.pageSize - 1)) / buildController.pageSize
+                                 }).ToArray());
+
+            SitemapData model = new SitemapData()
+            {
+                Builds = (from b in builds
+                          select new SitemapDataBuild()
+                          {
+                              Id = b.Id,
+                              Name = b.FullBuildString
+                          }).ToArray(),
+
+                Actions = actions
+            };
+
+            return View(model);
         }
     }
 }

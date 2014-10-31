@@ -145,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\admin\Controllers\baseController.cs" />
     <Compile Include="Code\BuildDateTimeModelBinder.cs" />
     <Compile Include="Code\DisplayHelpers.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Models\ViewModel\LoginUser.cs" />
     <Compile Include="Models\ViewModel\ChangePassword.cs" />
     <Compile Include="Models\ViewModel\RegistrationUser.cs" />
+    <Compile Include="Models\ViewModel\SitemapData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +179,7 @@
     <Content Include="Areas\admin\Views\_ViewStart.cshtml" />
     <Content Include="content\tile\wide.png" />
     <Content Include="content\Web.config" />
+    <Content Include="Areas\admin\Views\base\index.cshtml" />
     <None Include="Properties\PublishProfiles\Milestone 1 FTP.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="googleacffc6da14c53e15.html" />
@@ -215,6 +218,7 @@
     <Content Include="Views\support\password.cshtml" />
     <Content Include="Views\support\thanks_register.cshtml" />
     <Content Include="Views\support\rss.cshtml" />
+    <Content Include="Views\support\sitemap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

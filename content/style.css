@@ -97,3 +97,9 @@ label, .control-label, .help-block, .checkbox, .radio {
 .table .btn {
     padding: 4px 9px;
 }
+
+.table-admin > tbody > tr > th,
+.table-admin > tbody > tr > td
+ {
+    vertical-align: middle;
+}

@@ -1,0 +1,73 @@
+﻿@model BuildFeed.Models.ViewModel.SitemapData
+@{
+    ViewBag.Title = "Sitemap | BuildFeed";
+}
+
+<h2>Sitemap</h2>
+
+<ul>
+    <li>
+        @Html.ActionLink("BuildFeed", "index", "build")
+        <ul>
+            <li>
+                <a href="#sitemap-builds" data-toggle="collapse">Builds</a>
+                <ul id="sitemap-builds" class="collapse">
+                    @foreach (var build in Model.Builds)
+                    {
+                        <li>@Html.ActionLink(build.Name, "info", new { controller = "build", id = build.Id })</li>
+                    }
+                </ul>
+            </li>
+            @foreach (var item in Model.Actions)
+            {
+                <li>
+                    <a href="#sitemap-@item.Key.ToLower()" data-toggle="collapse">@item.Key</a>
+                    <ul id="sitemap-@item.Key.ToLower()" class="collapse">
+                        @foreach (var action in item.Value)
+                        {
+                            if (string.IsNullOrEmpty(action.Name))
+                            {
+                                for (int i = 1; i <= action.Pages; i++)
+                                {
+                                    var urlParams = action.UrlParams;
+                                    urlParams["page"] = i;
+                                    <li>@Html.ActionLink("Page " + i.ToString(), action.Action, urlParams)</li>
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="#sitemap-@action.UniqueId" data-toggle="collapse">@action.Name</a>
+                                    <ul id="sitemap-@action.UniqueId" class="collapse">
+                                        @for (int i = 1; i <= action.Pages; i++)
+                                        {
+                                            var urlParams = action.UrlParams;
+                                            urlParams["page"] = i;
+                                            <li>@Html.ActionLink("Page " + i.ToString(), action.Action, urlParams)</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </li>
+            }
+            <li>
+                <a href="#sitemap-rss" data-toggle="collapse">RSS Feeds</a>
+                <ul id="sitemap-rss" class="collapse">
+                    <li><a href="@Url.Action("index", new { controller = "rss" })" title="Recently compiled"><i class="fa fa-sm fa-rss"></i> Recently compiled</a></li>
+                    <li><a href="@Url.Action("added", new { controller = "rss" })" title="Recently added to BuildFeed"><i class="fa fa-sm fa-rss"></i> Recently added to BuildFeed</a></li>
+                    <li><a href="@Url.Action("version", new { controller = "rss" })" title="Highest version"><i class="fa fa-sm fa-rss"></i> Highest version</a></li>
+                    <li>
+                        Flight levels
+                        <ul>
+                            <li><a href="@Url.Action("flight", new { controller = "rss", id = "low" })" title="Low flight level"><i class="fa fa-sm fa-rss"></i> Low flight level</a></li>
+                            <li><a href="@Url.Action("flight", new { controller = "rss", id = "medium" })" title="Medium flight level"><i class="fa fa-sm fa-rss"></i> Medium flight level</a></li>
+                            <li><a href="@Url.Action("flight", new { controller = "rss", id = "high" })" title="High flight level"><i class="fa fa-sm fa-rss"></i> High flight level</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -45,8 +45,12 @@ namespace BuildFeed.Models
 
 
         [@Required]
-        [DisplayName("Time Added")]
+        [DisplayName("Time Created")]
         public DateTime Added { get; set; }
+
+        [@Required]
+        [DisplayName("Time Modified")]
+        public DateTime Modified { get; set; }
 
         [@Required]
         [DisplayName("Source Type")]
@@ -85,7 +89,7 @@ namespace BuildFeed.Models
         {
             get
             {
-                switch(SourceType)
+                switch (SourceType)
                 {
                     case TypeOfSource.PublicRelease:
                     case TypeOfSource.InternalLeak:
@@ -155,6 +159,21 @@ namespace BuildFeed.Models
                     .ThenByDescending(b => b.MinorVersion)
                     .ThenByDescending(b => b.Number)
                     .ThenByDescending(b => b.Revision);
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public static IEnumerable<Build> SelectInVersionOrder()
+        {
+            using (RedisClient rClient = new RedisClient(DatabaseConfig.Host, DatabaseConfig.Port, db: DatabaseConfig.Database))
+            {
+                var client = rClient.As<Build>();
+                return client.GetAll()
+                    .OrderByDescending(b => b.MajorVersion)
+                    .ThenByDescending(b => b.MinorVersion)
+                    .ThenByDescending(b => b.Number)
+                    .ThenByDescending(b => b.Revision)
+                    .ThenByDescending(b => b.BuildTime);
             }
         }
 
@@ -235,6 +254,7 @@ namespace BuildFeed.Models
         {
             Build old = Build.SelectById(item.Id);
             item.Added = old.Added;
+            item.Modified = DateTime.Now;
 
             using (RedisClient rClient = new RedisClient(DatabaseConfig.Host, DatabaseConfig.Port, db: DatabaseConfig.Database))
             {

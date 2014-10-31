@@ -15,9 +15,9 @@ namespace BuildFeed.Areas.admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "admin_default",
+                "Admin (Default)",
                 "admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "index", controller = "base", id = UrlParameter.Optional }
             );
         }
     }
