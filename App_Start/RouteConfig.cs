@@ -60,7 +60,7 @@ namespace BuildFeed
 
             routes.MapRoute(
                 name: "Year",
-                url: "year/{year}/{page}/",
+                url: "year/{year}/page/{page}/",
                 defaults: new { controller = "Build", action = "year", page = 1 }
             );
 
@@ -72,7 +72,7 @@ namespace BuildFeed
 
             routes.MapRoute(
                 name: "Source",
-                url: "source/{source}/{page}/",
+                url: "source/{source}/page/{page}/",
                 defaults: new { controller = "Build", action = "source", page = 1 }
             );
 

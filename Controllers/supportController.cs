@@ -162,7 +162,7 @@ namespace BuildFeed.Controllers
                                      UrlParams = new RouteValueDictionary(new
                                      {
                                          controller = "build",
-                                         action = "version",
+                                         action = "lab",
                                          lab = bv.Key,
                                          page = 1
                                      }),
@@ -195,7 +195,7 @@ namespace BuildFeed.Controllers
                                      UrlParams = new RouteValueDictionary(new
                                      {
                                          controller = "build",
-                                         action = "version",
+                                         action = "source",
                                          source = bv.Key,
                                          page = 1
                                      }),
