@@ -70,7 +70,7 @@ namespace BuildFeed.Controllers
                                  Title = build.FullBuildString,
                                  Link = new RssUrl(string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id }))),
                                  Guid = new RssGuid() { IsPermaLink = true, Value = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Action("info", new { controller = "Build", id = build.Id })) },
-                                 PubDate = build.Added
+                                 //PubDate = build.Added
                              }).ToList()
                 }
             };

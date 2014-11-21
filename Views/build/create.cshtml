@@ -229,7 +229,7 @@
 
         $(function () {
             $("#quickpaste").change(function () {
-                var regex = /(\d)\.([\d]{1,2})\.([\d]{4,5})\.([\d]{1,5})\.([a-zA-Z0-9_]+?)\.(\d\d\d\d\d\d-\d\d\d\d)/;
+                var regex = /([\d]{1,2})\.([\d]{1,2})\.([\d]{4,5})\.([\d]{1,5})\.([a-zA-Z0-9_]+?)\.(\d\d\d\d\d\d-\d\d\d\d)/;
                 var result = regex.exec($("#quickpaste").val());
 
                 $("#MajorVersion").val(result[1]);
