@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using BuildFeed.Models;
 using BuildFeed.Models.ViewModel;
+using System.Xml.Linq;
 
 namespace BuildFeed.Controllers
 {
@@ -215,6 +216,38 @@ namespace BuildFeed.Controllers
             };
 
             return View(model);
+        }
+
+        public ActionResult xmlsitemap()
+        {
+            List<XElement> xlist = new List<XElement>();
+
+            // home page
+            XElement home = new XElement("url");
+            home.Add(new XElement("loc", Request.Url.GetLeftPart(UriPartial.Authority) + "/"));
+            home.Add(new XElement("changefreq", "daily"));
+            xlist.Add(home);
+
+            foreach(var b in Build.Select())
+            {
+                XElement url = new XElement("url");
+                url.Add(new XElement("loc", Request.Url.GetLeftPart(UriPartial.Authority) + Url.Action("info", "build", new { id = b.Id })));
+                if(b.Modified != DateTime.MinValue)
+                {
+                    url.Add(new XElement("lastmod", b.Modified.ToString("yyyy-MM-dd")));
+                }
+                xlist.Add(url);
+            }
+
+            XElement root = new XElement("urlset", xlist);
+
+            XDocument xdoc = new XDocument(root);
+
+            Response.ContentType = "application/xml";
+            xdoc.Save(Response.OutputStream);
+
+
+            return new EmptyResult();
         }
     }
 }
